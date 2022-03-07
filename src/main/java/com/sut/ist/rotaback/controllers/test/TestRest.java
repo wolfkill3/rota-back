@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.*;
 
 import com.nimbusds.oauth2.sdk.util.StringUtils;
+import com.sut.ist.rotaback.controllers.auth.dto.RulesLevel;
 import com.sut.ist.rotaback.controllers.auth.request.LoginRequest;
 import com.sut.ist.rotaback.controllers.auth.request.TokenRequest;
 import com.sut.ist.rotaback.controllers.auth.dto.LoginDTO;
@@ -12,31 +13,33 @@ import org.apache.commons.codec.binary.Base64;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController("api/v1/test")
+@RestController
+@RequestMapping("api/v1/test")
 public class TestRest {
     @PostMapping(value = "/login")
     public @ResponseBody
     LoginDTO getLogin(@RequestBody LoginRequest request) {
-        if (StringUtils.isBlank(request.login()) || StringUtils.isBlank(request.password())) {
+        if (StringUtils.isBlank(request.getLogin()) || StringUtils.isBlank(request.getPassword())) {
             throw new RuntimeException("Login or password is empty");
         }
-        return new LoginDTO("Admin", UUID.randomUUID().toString(), 10);
+        return new LoginDTO("Admin", UUID.randomUUID().toString(), RulesLevel.ADMIN.value);
     }
 
     @PostMapping(value = "/profile")
     public @ResponseBody
     ProfileDTO getProfile(@RequestBody TokenRequest request) {
-        if ("Admin".equalsIgnoreCase(request.login())) {
+        if ("Admin".equalsIgnoreCase(request.getLogin())) {
             var profile = new ProfileDTO();
-            profile.rating(100);
-            profile.age(25);
-            profile.firstName("Вадим");
-            profile.middleName("Мельников");
-            profile.lastName("Александрович");
-            profile.city("Санкт-Петербург");
+            profile.setRating(100);
+            profile.setAge(25);
+            profile.setFirstName("Вадим");
+            profile.setMiddleName("Мельников");
+            profile.setLastName("Александрович");
+            profile.setCity("Санкт-Петербург");
             return profile;
         }
         return new ProfileDTO();

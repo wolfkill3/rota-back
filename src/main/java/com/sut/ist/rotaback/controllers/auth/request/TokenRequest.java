@@ -1,10 +1,10 @@
 package com.sut.ist.rotaback.controllers.auth.request;
 
 import lombok.Getter;
-import lombok.experimental.Accessors;
+import lombok.Setter;
 
 @Getter
-@Accessors(fluent = true)
+@Setter
 public class TokenRequest {
     private String token;
     private String login;

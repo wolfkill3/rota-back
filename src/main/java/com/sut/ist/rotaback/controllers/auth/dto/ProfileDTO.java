@@ -1,12 +1,12 @@
 package com.sut.ist.rotaback.controllers.auth.dto;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.Accessors;
 
 @RequiredArgsConstructor
-@Accessors(fluent = true)
 @Setter
+@Getter
 public class ProfileDTO {
     private String firstName;
     private String middleName;
