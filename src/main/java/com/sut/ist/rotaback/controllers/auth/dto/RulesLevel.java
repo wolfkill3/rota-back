@@ -6,7 +6,7 @@ public enum RulesLevel {
     USER(3),
     MUTED(2),
     BANNED(1),
-    DELETED(0);
+    UNAUTHORIZED(0);
 
     public final int value;
 

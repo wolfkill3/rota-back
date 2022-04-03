@@ -14,4 +14,5 @@ public class ProfileDTO {
     private String city;
     private int age;
     private int rating;
+    private String dateOfBirth;
 }
