@@ -1,5 +1,7 @@
 package com.sut.ist.rotaback.controllers.auth.dto;
 
+import java.util.*;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -14,5 +16,5 @@ public class ProfileDTO {
     private String city;
     private int age;
     private int rating;
-    private String dateOfBirth;
+    private Date dateOfBirth;
 }
