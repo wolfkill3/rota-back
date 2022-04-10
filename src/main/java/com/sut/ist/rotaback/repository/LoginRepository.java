@@ -7,6 +7,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface LoginRepository extends CrudRepository<ProfileLogin, Long> {
-    @Query(value = "select * from profile_login pp where pp.profile_id=?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM profile_login pp WHERE pp.profile_id=?1", nativeQuery = true)
     ProfileLogin getByProfileId(String id);
+
+    @Query(value = "SELECT IF(count(*) > 0, 1, 0) FROM profile_login pp WHERE pp.login=?1", nativeQuery = true)
+    Boolean existsByLogin(String login);
 }
