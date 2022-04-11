@@ -1,14 +1,18 @@
 package com.sut.ist.rotaback.controllers.auth.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-@RequiredArgsConstructor
+
 @Setter
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class LoginDTO {
-    private final String login;
-    private final String token;
-    private final int rulesLevel;
+    private String login;
+    private String token;
+    private RulesLevel rulesLevel;
 }

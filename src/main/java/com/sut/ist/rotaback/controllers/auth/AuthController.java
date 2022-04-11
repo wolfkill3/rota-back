@@ -22,6 +22,6 @@ public class AuthController {
         if (StringUtils.isBlank(request.getLogin()) || StringUtils.isBlank(request.getPassword())) {
             throw new RuntimeException("Login or password is empty");
         }
-        return new LoginDTO("Admin", UUID.randomUUID().toString(), RulesLevel.ADMIN.value);
+        return new LoginDTO("Admin", UUID.randomUUID().toString(), RulesLevel.ADMIN);
     }
 }

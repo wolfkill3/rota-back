@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.*;
 
 import com.nimbusds.oauth2.sdk.util.StringUtils;
+import com.sut.ist.rotaback.config.ProjectConfiguration;
 import com.sut.ist.rotaback.controllers.auth.dto.LoginDTO;
 import com.sut.ist.rotaback.controllers.auth.dto.ProfileDTO;
 import com.sut.ist.rotaback.controllers.auth.dto.RulesLevel;
@@ -11,7 +12,6 @@ import com.sut.ist.rotaback.controllers.auth.request.LoginRequest;
 import com.sut.ist.rotaback.controllers.auth.request.TokenRequest;
 import com.sut.ist.rotaback.controllers.profile.dto.ProfileTableRowDTO;
 import com.sut.ist.rotaback.controllers.profile.request.ProfileTableRequest;
-import com.sut.ist.rotaback.entity.Profile;
 import com.sut.ist.rotaback.entity.ProfileLogin;
 import com.sut.ist.rotaback.entity.ProfilePhoto;
 import com.sut.ist.rotaback.entity.ProfileRating;
@@ -42,6 +42,7 @@ public class TestRest {
     private final ProfileMapper profileMapper;
     private final PhotoRepository photoRepository;
     private final RatingRepository ratingRepository;
+    private final ProjectConfiguration configuration;
 
     @Autowired
     TestRest(final AnalyzeService analyzeService,
@@ -49,13 +50,15 @@ public class TestRest {
              final LoginRepository LoginRepository,
              final ProfileMapper profileMapper,
              final PhotoRepository PhotoRepository,
-             final RatingRepository RatingRepository) {
+             final RatingRepository RatingRepository,
+             final ProjectConfiguration configuration) {
         this.analyzeService = analyzeService;
         this.profileRepository = ProfileRepository;
         this.loginRepository = LoginRepository;
         this.profileMapper = profileMapper;
         this.photoRepository = PhotoRepository;
         this.ratingRepository = RatingRepository;
+        this.configuration = configuration;
     }
 
     @PostMapping(value = "/login")
@@ -64,7 +67,7 @@ public class TestRest {
         if (StringUtils.isBlank(request.getLogin()) || StringUtils.isBlank(request.getPassword())) {
             throw new RuntimeException("Login or password is empty");
         }
-        return new LoginDTO("Admin", UUID.randomUUID().toString(), RulesLevel.ADMIN.value);
+        return new LoginDTO("Admin", UUID.randomUUID().toString(), RulesLevel.ADMIN);
     }
 
     @PostMapping(value = "/profile")
@@ -146,10 +149,11 @@ public class TestRest {
 
     @GetMapping("/get/{id}")
     public @ResponseBody
-    ProfileDTO getProfileById(@PathVariable final String id) {
-        Profile profile = profileRepository.getByProfileId(id);
-        if (profile.getId() != null) {
-            return profileMapper.toDto(profile);
+    ProfileDTO getProfileById(@PathVariable final Long id) {
+        System.out.println(configuration.getAnalyzeUrl());
+        var profile = profileRepository.findById(id);
+        if (profile.isPresent()) {
+            return profileMapper.toDto(profile.get());
         } else {
             throw new HibernateException("Profile[" + id + "] does not exist!");
         }

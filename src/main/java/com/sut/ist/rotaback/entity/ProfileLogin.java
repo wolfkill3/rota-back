@@ -24,6 +24,9 @@ public class ProfileLogin {
     private String email;
     @Column(name = "permission")
     private RulesLevel permission;
+    @OneToOne
+    @JoinColumn(name = "token", referencedColumnName = "profile_id")
+    private Token token;
 
     public Long getId() {
         return id;

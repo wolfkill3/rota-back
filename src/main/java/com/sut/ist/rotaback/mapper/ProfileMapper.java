@@ -5,7 +5,7 @@ import com.sut.ist.rotaback.entity.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ProfileMapper extends EntityMapper<ProfileDTO, Profile> {
+public class ProfileMapper extends AbstractEntityMapper<ProfileDTO, Profile> {
 
     @Override
     public ProfileDTO toDto(final Profile profile) {

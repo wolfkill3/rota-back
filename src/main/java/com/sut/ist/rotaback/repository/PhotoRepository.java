@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PhotoRepository extends CrudRepository<ProfilePhoto, Long> {
-    @Query(value = "select * from profile_photo pp where pp.profile_id=?1", nativeQuery = true)
+    @Query(value = "select * from profile_photo where profile_id=?1", nativeQuery = true)
     ProfilePhoto getByProfileId(String id);
 }
