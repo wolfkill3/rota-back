@@ -1,6 +1,5 @@
 package com.sut.ist.rotaback.repository;
 
-import com.sut.ist.rotaback.entity.ProfileRating;
 import com.sut.ist.rotaback.entity.Token;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

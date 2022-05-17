@@ -16,7 +16,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ContextConfiguration(classes = {RotaBackApplication.class})
 class ProfileTest {
     @Autowired
-    private ProfileRepository ProfileRepository;
+    private ProfileRepository profileRepository;
     @Autowired
     private ProfileMapper profileMapper;
 
@@ -28,7 +28,7 @@ class ProfileTest {
         profile.setMiddleName("Мельников");
         profile.setLastName("Александрович");
         profile.setCity("Санкт-Петербург");
-        ProfileRepository.save(profileMapper.toEntity(profile));
-        System.out.println(ProfileRepository.findAll().iterator().next().getCity());
+        profileRepository.save(profileMapper.toEntity(profile));
+        System.out.println(profileRepository.findAll());
     }
 }

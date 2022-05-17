@@ -12,15 +12,13 @@ import com.sut.ist.rotaback.controllers.auth.request.LoginRequest;
 import com.sut.ist.rotaback.controllers.auth.request.TokenRequest;
 import com.sut.ist.rotaback.controllers.profile.dto.ProfileTableRowDTO;
 import com.sut.ist.rotaback.controllers.profile.request.ProfileTableRequest;
-import com.sut.ist.rotaback.entity.ProfileLogin;
-import com.sut.ist.rotaback.entity.ProfilePhoto;
-import com.sut.ist.rotaback.entity.ProfileRating;
 import com.sut.ist.rotaback.mapper.ProfileMapper;
 import com.sut.ist.rotaback.repository.LoginRepository;
 import com.sut.ist.rotaback.repository.PhotoRepository;
 import com.sut.ist.rotaback.repository.ProfileRepository;
 import com.sut.ist.rotaback.repository.RatingRepository;
-import com.sut.ist.rotaback.services.analyze.AnalyzeService;
+import com.sut.ist.rotaback.services.AnalyzeService;
+import com.sut.ist.rotaback.services.TestService;
 import org.apache.commons.codec.binary.Base64;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +41,7 @@ public class TestRest {
     private final PhotoRepository photoRepository;
     private final RatingRepository ratingRepository;
     private final ProjectConfiguration configuration;
+    private final TestService testService;
 
     @Autowired
     TestRest(final AnalyzeService analyzeService,
@@ -51,7 +50,7 @@ public class TestRest {
              final ProfileMapper profileMapper,
              final PhotoRepository PhotoRepository,
              final RatingRepository RatingRepository,
-             final ProjectConfiguration configuration) {
+             final ProjectConfiguration configuration, final TestService testService) {
         this.analyzeService = analyzeService;
         this.profileRepository = ProfileRepository;
         this.loginRepository = LoginRepository;
@@ -59,12 +58,13 @@ public class TestRest {
         this.photoRepository = PhotoRepository;
         this.ratingRepository = RatingRepository;
         this.configuration = configuration;
+        this.testService = testService;
     }
 
     @PostMapping(value = "/login")
     public @ResponseBody
     LoginDTO getLogin(@RequestBody LoginRequest request) {
-        if (StringUtils.isBlank(request.getLogin()) || StringUtils.isBlank(request.getPassword())) {
+        if (StringUtils.isBlank(request.login) || StringUtils.isBlank(request.password)) {
             throw new RuntimeException("Login or password is empty");
         }
         return new LoginDTO("Admin", UUID.randomUUID().toString(), RulesLevel.ADMIN);
@@ -73,7 +73,7 @@ public class TestRest {
     @PostMapping(value = "/profile")
     public @ResponseBody
     ProfileDTO getProfile(@RequestBody TokenRequest request) {
-        if ("Admin".equalsIgnoreCase(request.getLogin())) {
+        if ("Admin".equalsIgnoreCase(request.login)) {
             var profile = new ProfileDTO();
             profile.setRating(100);
             profile.setAge(25);
@@ -118,33 +118,7 @@ public class TestRest {
     @GetMapping("/create")
     public @ResponseBody
     String test() {
-        var profile = new ProfileDTO();
-        profile.setDateOfBirth(new Date());
-        profile.setFirstName("Вадим");
-        profile.setMiddleName("Мельников");
-        profile.setLastName("Александрович");
-        profile.setCity("Санкт-Петербург");
-        var profileEntity = profileMapper.toEntity(profile);
-        var afterSave = profileRepository.save(profileEntity);
-
-        var login = new ProfileLogin();
-        login.setLogin("admin");
-        login.setPassword("1");
-        login.setEmail("testEmail@test.com");
-        login.setProfile(afterSave);
-        login.setPermission(RulesLevel.ADMIN);
-        loginRepository.save(login);
-
-        var photo = new ProfilePhoto();
-        photo.setPath("src/main/resources/static/testProfile.jpg");
-        photo.setProfile(afterSave);
-        photoRepository.save(photo);
-
-        var rating = new ProfileRating();
-        rating.setRating(100);
-        rating.setProfile(afterSave);
-        ratingRepository.save(rating);
-        return "success";
+        return testService.addProfile();
     }
 
     @GetMapping("/get/{id}")

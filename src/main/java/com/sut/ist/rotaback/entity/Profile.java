@@ -7,8 +7,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import com.sut.ist.rotaback.controllers.auth.dto.RulesLevel;
-
 @Entity
 public class Profile {
     @Id

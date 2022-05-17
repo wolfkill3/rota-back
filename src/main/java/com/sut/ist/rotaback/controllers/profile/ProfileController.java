@@ -6,7 +6,7 @@ import com.sut.ist.rotaback.controllers.auth.dto.ProfileDTO;
 import com.sut.ist.rotaback.controllers.auth.request.TokenRequest;
 import com.sut.ist.rotaback.controllers.profile.dto.ProfileTableRowDTO;
 import com.sut.ist.rotaback.controllers.profile.request.ProfileTableRequest;
-import com.sut.ist.rotaback.services.analyze.AnalyzeService;
+import com.sut.ist.rotaback.services.AnalyzeService;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +30,7 @@ public class ProfileController {
     @PostMapping
     public @ResponseBody
     ProfileDTO getProfile(@RequestBody TokenRequest request) {
-        if ("Admin".equalsIgnoreCase(request.getLogin())) {
+        if ("Admin".equalsIgnoreCase(request.login)) {
             var profile = new ProfileDTO();
             profile.setRating(100);
             profile.setAge(25);
@@ -56,7 +56,7 @@ public class ProfileController {
 
     @PostMapping(value = "/table")
     public @ResponseBody
-    ResponseEntity<ProfileTableRowDTO[]> getProfileTableRows(ProfileTableRequest request) {
+    ResponseEntity<ProfileTableRowDTO[]> getProfileTableRows(@RequestBody ProfileTableRequest request) {
         ProfileTableRowDTO[] rows = analyzeService.getTableRows(10);
         return ResponseEntity.ok(rows);
     }

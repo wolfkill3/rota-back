@@ -1,4 +1,4 @@
-package com.sut.ist.rotaback.services.analyze;
+package com.sut.ist.rotaback.services;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -7,9 +7,12 @@ import com.sut.ist.rotaback.config.ProjectConfiguration;
 import com.sut.ist.rotaback.controllers.profile.dto.ProfileTableRowDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-@Component
+@Service
+@Transactional
 public class AnalyzeService {
     private static final String PATH = "/rest/analyze";
     private final RestTemplate restTemplate = new RestTemplate();
